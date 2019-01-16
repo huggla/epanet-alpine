@@ -1,8 +1,10 @@
-FROM huggla/build-epanet2 as epa
+ARG TAG="20190115"
+
+FROM huggla/epanet:$TAG as epanet
 FROM huggla/tomcat-oracle
 
 USER root
 
-COPY --from=epa /epa/epanet2 /usr/local/bin/epanet2
+COPY --from=epanet /epanet /
 
 USER sudoer
