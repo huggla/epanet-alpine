@@ -1,10 +1,46 @@
-ARG TAG="20190115"
+ARG TAG="20190129"
+ARG CONTENTIMAGE1="huggla/epanet:20190115"
+ARG CONTENTSOURCE1="/epanet"
+ARG CONTENTIMAGE2="huggla/swmm:20190115"
+ARG CONTENTSOURCE2="/swmm"
+ARG BASEIMAGE="huggla/tomcat-oracle:$TAG"
 
-FROM huggla/epanet:$TAG as epanet
-FROM huggla/tomcat-oracle
+#--------Generic template (don't edit)--------
+FROM ${CONTENTIMAGE1:-scratch} as content1
+FROM ${CONTENTIMAGE2:-scratch} as content2
+FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
+FROM ${BUILDIMAGE:-huggla/build} as build
+FROM ${BASEIMAGE:-huggla/base:$TAG} as image
+ARG CONTENTSOURCE1
+ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
+ARG CONTENTDESTINATION1
+ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/buildfs/}"
+ARG CONTENTSOURCE2
+ARG CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
+ARG CONTENTDESTINATION2
+ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/buildfs/}"
+ARG CLONEGITSDIR
+ARG DOWNLOADSDIR
+ARG MAKEDIRS
+ARG MAKEFILES
+ARG EXECUTABLES
+ARG STARTUPEXECUTABLES
+ARG EXPOSEFUNCTIONS
+COPY --from=build /imagefs /
+ENV VAR_STARTUPEXECUTABLES="$STARTUPEXECUTABLES"
+#---------------------------------------------
 
-USER root
+ENV VAR_LINUX_USER="tomcat" \
+    VAR_FINAL_COMMAND="JAVA_HOME=\"/usr/local\" CATALINA_HOME=\"$CONTENTSOURCE1\" CATALINA_OPTS=\"\$VAR_CATALINA_OPTS\" JAVA_MAJOR=9 TOMCAT_MAJOR=9 CATALINA_OUT=\"\$VAR_CATALINA_OUT\" catalina.sh run" \
+    VAR_CONFIG_DIR="/etc/tomcat" \
+    VAR_WEBAPPS_DIR="/webapps" \
+    VAR_WORK_DIR="/usr/local/tomcat/work" \
+    VAR_LOGS_DIR="/usr/local/tomcat/logs" \
+    VAR_TEMP_DIR="/tmp" \
+    VAR_CATALINA_OPTS="-Xms128m -Xmx756M -XX:SoftRefLRUPolicyMSPerMB=36000" \
+    VAR_CATALINA_OUT="/dev/null"
 
-COPY --from=epanet /epanet /
-
-USER sudoer
+#--------Generic template (don't edit)--------
+USER starter
+ONBUILD USER root
+#---------------------------------------------
