@@ -4,7 +4,7 @@ ARG CONTENTSOURCE1="/epanet"
 ARG CONTENTIMAGE2="huggla/swmm:20190115"
 ARG CONTENTSOURCE2="/swmm"
 ARG BASEIMAGE="huggla/tomcat-oracle:$TAG"
-ARG EXECUTABLES="/usr/bin/epanet2 /usr/bin/swmm5
+ARG EXECUTABLES="/usr/bin/epanet2 /usr/bin/swmm5"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
