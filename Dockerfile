@@ -1,9 +1,10 @@
-ARG TAG="20190129"
+ARG TAG="20190206"
 ARG CONTENTIMAGE1="huggla/epanet:20190115"
 ARG CONTENTSOURCE1="/epanet"
 ARG CONTENTIMAGE2="huggla/swmm:20190115"
 ARG CONTENTSOURCE2="/swmm"
 ARG BASEIMAGE="huggla/tomcat-oracle:$TAG"
+ARG EXECUTABLES="/usr/bin/epanet2 /usr/bin/swmm5
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
@@ -27,18 +28,7 @@ ARG EXECUTABLES
 ARG STARTUPEXECUTABLES
 ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
-ENV VAR_STARTUPEXECUTABLES="$STARTUPEXECUTABLES"
 #---------------------------------------------
-
-ENV VAR_LINUX_USER="tomcat" \
-    VAR_FINAL_COMMAND="JAVA_HOME=\"/usr/local\" CATALINA_HOME=\"$CONTENTSOURCE1\" CATALINA_OPTS=\"\$VAR_CATALINA_OPTS\" JAVA_MAJOR=9 TOMCAT_MAJOR=9 CATALINA_OUT=\"\$VAR_CATALINA_OUT\" catalina.sh run" \
-    VAR_CONFIG_DIR="/etc/tomcat" \
-    VAR_WEBAPPS_DIR="/webapps" \
-    VAR_WORK_DIR="/usr/local/tomcat/work" \
-    VAR_LOGS_DIR="/usr/local/tomcat/logs" \
-    VAR_TEMP_DIR="/tmp" \
-    VAR_CATALINA_OPTS="-Xms128m -Xmx756M -XX:SoftRefLRUPolicyMSPerMB=36000" \
-    VAR_CATALINA_OUT="/dev/null"
 
 #--------Generic template (don't edit)--------
 USER starter
