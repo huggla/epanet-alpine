@@ -1,2 +1,2 @@
 # epanet2-tomcat
-test
+Based on huggla/tomcat-oracle with EPANET2 and SWMM5 added.
