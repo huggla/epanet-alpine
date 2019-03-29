@@ -3,7 +3,7 @@ ARG CONTENTIMAGE1="huggla/epanet:$TAG"
 ARG CONTENTSOURCE1="/epanet"
 ARG CONTENTIMAGE2="huggla/swmm:$TAG"
 ARG CONTENTSOURCE2="/swmm"
-ARG BASEIMAGE="huggla/tomcat-openjdk:$TAG"
+ARG BASEIMAGE="huggla/tomcat-alpine:openjdk-$TAG"
 ARG EXECUTABLES="/usr/bin/epanet2 /usr/bin/swmm5"
 
 #--------Generic template (don't edit)--------
