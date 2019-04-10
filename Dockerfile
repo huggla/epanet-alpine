@@ -36,8 +36,8 @@ ARG EXPOSEFUNCTIONS
 ARG GID0WRITABLES
 ARG GID0WRITABLESRECURSIVE
 ARG LINUXUSEROWNED
+ARG LINUXUSEROWNEDRECURSIVE
 COPY --from=build /imagefs /
-RUN [ -n "$LINUXUSEROWNED" ] && chown 102 $LINUXUSEROWNED || true
 #---------------------------------------------
 
 #--------Generic template (don't edit)--------
